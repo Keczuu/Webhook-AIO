@@ -114,7 +114,7 @@ class webhookAIO:
             set_webhook1(self.settings)
             save_settings(self.settings, settings_file_path)
         print(f'''{Fore.LIGHTCYAN_EX}                     ╔═════════════════════════════════════════════════════════╗
-                     ║                   Discord AIO by Keczuu{Fore.LIGHTCYAN_EX}                 ║
+                     ║                  Webhook AIO by Keczuu{Fore.LIGHTCYAN_EX}                  ║
                      ║═════════════════════════════════════════════════════════║
                      ║ {Fore.YELLOW}[1] {Fore.LIGHTCYAN_EX}SPAM WEBHOOK                                        ║
                      ║ {Fore.YELLOW}[2] {Fore.LIGHTCYAN_EX}DELETE WEBHOOK                                      ║
