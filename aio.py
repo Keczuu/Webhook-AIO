@@ -16,9 +16,9 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 def redirect_to_main_menu():
     time.sleep(1)
-    print("                                      Exiting...")
+    print("                                    Exiting...")
     time.sleep(1)
-    print("                                      Going back to main menu...")
+    print("                                    Going back to main menu...")
     time.sleep(1)
     clear_console()
     webhookAIO()
@@ -95,7 +95,7 @@ def set_webhook1(settings):
 
 class webhookAIO:
     def __init__(self):
-        self.successful_message_count = 0
+        change_console_size(100, 25)
         os.system('cls' if os.name == 'nt' else 'clear')
         self.settings = load_settings(settings_file_path)
         if not self.settings.get("Loading_screen"):
@@ -113,15 +113,21 @@ class webhookAIO:
             print("Please set your webhook URL.")
             set_webhook1(self.settings)
             save_settings(self.settings, settings_file_path)
-        print(f'''{Fore.LIGHTCYAN_EX}                     ╔═════════════════════════════════════════════════════════╗
-                     ║                  Webhook AIO by Keczuu{Fore.LIGHTCYAN_EX}                  ║
-                     ║═════════════════════════════════════════════════════════║
-                     ║ {Fore.YELLOW}[1] {Fore.LIGHTCYAN_EX}SPAM WEBHOOK                                        ║
-                     ║ {Fore.YELLOW}[2] {Fore.LIGHTCYAN_EX}DELETE WEBHOOK                                      ║
-                     ║ {Fore.YELLOW}[3] {Fore.LIGHTCYAN_EX}WEBHOOK INFO                                        ║ 
-                     ║ {Fore.YELLOW}[4] {Fore.LIGHTCYAN_EX}ENCODE/DECODE TO BASE64                             ║
-                     ╚═════════════════════════════════════════════════════════╝          ''')
-        selection = input(Fore.WHITE + "                                      Please select an option: ")
+        print(f'''{Fore.RED}
+ ▄▀▀▄    ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀█▄▄   ▄▀▀▄ ▄▄   ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ █      ▄▀▀█▄   ▄▀▀█▀▄   ▄▀▀▀▀▄  
+█   █    ▐  █ ▐  ▄▀   ▐ ▐ ▄▀   █ █  █   ▄▀ █      █ █      █ █  █ ▄▀     ▐ ▄▀ ▀▄ █   █  █ █      █ 
+▐  █        █   █▄▄▄▄▄    █▄▄▄▀  ▐  █▄▄▄█  █      █ █      █ ▐  █▀▄        █▄▄▄█ ▐   █  ▐ █      █ 
+  █   ▄    █    █    ▌    █   █     █   █  ▀▄    ▄▀ ▀▄    ▄▀   █   █      ▄▀   █     █    ▀▄    ▄▀ 
+   ▀▄▀ ▀▄ ▄▀   ▄▀▄▄▄▄    ▄▀▄▄▄▀    ▄▀  ▄▀    ▀▀▀▀     ▀▀▀▀   ▄▀   █      █   ▄▀   ▄▀▀▀▀▀▄   ▀▀▀▀   
+         ▀     █    ▐   █    ▐    █   █                      █    ▐      ▐   ▐   █       █         
+               ▐        ▐         ▐   ▐                      ▐                   ▐       ▐         
+
+                                    {Fore.BLUE}1.{Fore.RED} SPAM WEBHOOK
+                                    {Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK
+                                    {Fore.BLUE}3.{Fore.RED} WEBHOOK INFO
+                                    {Fore.BLUE}4.{Fore.RED} ENCODE/DECODE TO BASE64
+              ''')
+        selection = input(Fore.WHITE + "                                    Please select an option: ")
         if selection == "1":
             self.spam()
         elif selection == "2":
@@ -144,27 +150,27 @@ class webhookAIO:
             except Exception as e:
                 return f"Error decoding Base64: {str(e)}"
 
-        print("                                      Choose an option:")
-        print("                                      1 - Normal URL webhook")
-        print("                                      2 - Base64 encoded webhook URL")
-        choice = input("                                      Enter your choice: ")
+        print("                                    Choose an option:")
+        print("                                    1 - Normal URL webhook")
+        print("                                    2 - Base64 encoded webhook URL")
+        choice = input("                                    Enter your choice: ")
 
         if choice == "1":
-            webhook_spam = input("                                      Enter the URL of the normal webhook: ")
+            webhook_spam = input("                                    Enter the URL of the normal webhook: ")
         elif choice == "2":
-            base64_encoded_string = input("                                      Enter the Base64 encoded webhook URL: ")
+            base64_encoded_string = input("                                    Enter the Base64 encoded webhook URL: ")
             webhook_spam = decode_base64(base64_encoded_string)
         else:
-            print("                                      Invalid choice. Exiting.")
+            print("                                    Invalid choice. Exiting.")
             redirect_to_main_menu()
-        print("                                      Choose an option:")
-        print("                                      1 - Given early message")
-        print("                                      2 - Type your own message")
-        choice1 = input("                                      Enter your choice: ")
+        print("                                    Choose an option:")
+        print("                                    1 - Given early message")
+        print("                                    2 - Type your own message")
+        choice1 = input("                                    Enter your choice: ")
         if choice1 == "1":
             message = "@everyone KECZUU WAS HERE https://bigrat.monster/media/bigrat.jpg"
         if choice1 == "2":
-            message = input("                                      Please write your message below:\n")
+            message = input("                                    Please write your message below:\n")
         usernames = ["Made with love by Keczuu. <3", "Oh my god Keczuu. please stop!", "DRAIN GANG FOR LIFE", "How was your day? Be honest", "Sub to my youtube! - @KeczuuToSucz", "Follow my insta! - @KeczuuToSucz"]
         avatar = "https://cdn.discordapp.com/avatars/454341370996326420/fe9cda3cf1f9238e3bec2019fa2a7a52.png?size=1024"
         tts = False
@@ -186,24 +192,24 @@ class webhookAIO:
 
     def delete(self, webhook_del_log):
         clear_console()
-        choice = input("                                      Choose an option:\n                                      1 - Normal URL webhook\n                                      2 - Base64-encoded webhook\n                                      Enter 1 or 2: ")
+        choice = input("                                    Choose an option:\n                                    1 - Normal URL webhook\n                                    2 - Base64-encoded webhook\n                                    Enter 1 or 2: ")
 
         if choice == '1':
-            webhook_url = input("                                      Enter the URL of webhook: ")
+            webhook_url = input("                                    Enter the URL of webhook: ")
         elif choice == '2':
-            base64_webhook = input("                                      Enter the base64-encoded webhook: ")
+            base64_webhook = input("                                    Enter the base64-encoded webhook: ")
             try:
                 webhook_url = base64.b64decode(base64_webhook).decode('utf-8')
             except Exception as e:
-                print("                                      Error decoding base64 input.")
+                print("                                    Error decoding base64 input.")
                 redirect_to_main_menu()
         else:
-            print("                                      Invalid choice. Please choose 1 or 2.")
+            print("                                    Invalid choice. Please choose 1 or 2.")
             redirect_to_main_menu()
 
         response = requests.get(webhook_url)
         if response.status_code != 200:
-            print("                                      Failed to retrieve webhook data. Check the URL or your internet connection.")
+            print("                                    Failed to retrieve webhook data. Check the URL or your internet connection.")
             redirect_to_main_menu()
 
         def Add_to_file():
@@ -226,18 +232,18 @@ class webhookAIO:
         message2 = f'<@{webhook_owner_id}> webhook has been deleted!'
         log = f"{webhook_owner_id} got his webhook deleted!\n{webhook_url}"
         requests.post(webhook_del_log, json={'content': message2})
-        print("                                      Webhook log has been sent!")
+        print("                                    Webhook log has been sent!")
         Add_to_file()
-        print(f"                                      Log saved!")
+        print(f"                                    Log saved!")
         redirect_to_main_menu()
 
     def info(self, webhook_info_log):
         clear_console()
-        webhook = input("                                      Enter webhook URL: ")
+        webhook = input("                                    Enter webhook URL: ")
         try:
             response = requests.get(f"{webhook}")
             if response.status_code == 200:
-                print("                                      Webhook valid! Getting info...")
+                print("                                    Webhook valid! Getting info...")
                 data = response.json()
                 Name = str(data["name"])
                 ChannelID = str(data["channel_id"])
@@ -261,17 +267,17 @@ class webhookAIO:
                 requests.post(webhook_info_log, json={'content': message2})
                 requests.post(webhook_info_log, json={'content': message3})
 
-                print("                                      Webhook data sent successfully!")
+                print("                                    Webhook data sent successfully!")
                 Add_to_file1()
-                print("                                      Saved to Check_Webhook_log.txt!")
+                print("                                    Saved to Check_Webhook_log.txt!")
                 redirect_to_main_menu()
 
             else:
-                print("                                      Webhook does not exists anymore!")
+                print("                                    Webhook does not exists anymore!")
                 redirect_to_main_menu()
 
         except Exception as e:
-            print("                                      Error getting webhook info: {e}")
+            print("                                    Error getting webhook info: {e}")
             redirect_to_main_menu()
 
     def decode(self):
@@ -287,32 +293,32 @@ class webhookAIO:
             return decoded_string
 
         while True:
-            print("                                      1. Encode to Base64")
-            print("                                      2. Decode from Base64")
+            print("                                    1. Encode to Base64")
+            print("                                    2. Decode from Base64")
             print("")
 
-            choice = input("                                      Enter your choice (1/2): ")
+            choice = input("                                    Enter your choice (1/2): ")
 
             if choice == '1':
-                input_string = input("                                      Enter the string to encode to Base64: ")
+                input_string = input("                                    Enter the string to encode to Base64: ")
                 encoded_result = encode_to_base64(input_string)
-                print("                                      Encoded to Base64:\n","                                      ",encoded_result)
+                print("                                    Encoded to Base64:\n","                                    ",encoded_result)
                 print("")
                 pyperclip.copy(encoded_result)
-                print("                                      Copied to clipboard!")
+                print("                                    Copied to clipboard!")
                 print("")
                 redirect_to_main_menu()
             elif choice == '2':
-                encoded_string = input("                                      Enter the Base64-encoded string to decode: ")
+                encoded_string = input("                                    Enter the Base64-encoded string to decode: ")
                 decoded_result = decode_from_base64(encoded_string)
-                print("                                      Decoded from Base64:", decoded_result)
+                print("                                    Decoded from Base64:", decoded_result)
                 print("")
                 pyperclip.copy(decoded_result)
-                print("                                      Copied to clipboard!")
+                print("                                    Copied to clipboard!")
                 print("")
                 redirect_to_main_menu()
             else:
-                print("                                      Invalid choice. Going back to the menu.")
+                print("                                    Invalid choice. Going back to the menu.")
                 redirect_to_main_menu()
 
 if __name__ == "__main__":
