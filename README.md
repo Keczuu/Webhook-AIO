@@ -19,4 +19,4 @@ This project is licensed under the GPL General Public License v3.0 License
 ## WARNING
 This github repository is only for EDUCATIONAL PURPOSES ONLY. I am NOT under any responsibility if anything happens to you.
 ## Contact
-- Discord - keczuu.
+- Discord - keczuu
