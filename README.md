@@ -3,6 +3,7 @@ I only use this to destroy ratters webhooks, but if you need this or take inspo,
 ## Preview
 ![preview](x1Cl6jN.png)
 ## Setup
+0. Download the rep ```git clone https://github.com/Keczuu/Webhook-AIO.git && cd Webhook-AIO```
 1. Add your proxies in `data/proxies.txt`
 2. Start `FIRST OPENING.bat`
 3. Start `OPEN AIO.bat`
@@ -18,4 +19,4 @@ This project is licensed under the GPL General Public License v3.0 License
 ## WARNING
 This github repository is only for EDUCATIONAL PURPOSES ONLY. I am NOT under any responsibility if anything happens to you.
 ## Contact
-- Discord - keczuu.
+- Discord - keczuu
