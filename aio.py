@@ -176,15 +176,16 @@ class webhookAIO:
         tts = False
 
         with open("data/proxies.txt", "r") as proxy_select:
-            proxies = proxy_select.readlines()
+            proxies_list = proxy_select.readlines()
+        proxies_list = [proxy.strip() for proxy in proxies_list if proxy.strip()]
         #code from spotify account generator by rado - thanks cutie <3
-        random_proxy = random.choice(proxies).strip()
-        proxies = {"http://": f"http://{random_proxy}", "https://": f"http://{random_proxy}"}
         
         while True:
             try:
+                random_proxy = random.choice(proxies_list)
+                proxy_dict = {"http": f"http://{random_proxy}", "https": f"http://{random_proxy}"}
                 username = random.choice(usernames)
-                response = requests.post(webhook_spam, json={"content": message, "username": username, "avatar_url": avatar, "tts": tts}, proxies=proxies)
+                response = requests.post(webhook_spam, json={"content": message, "username": username, "avatar_url": avatar, "tts": tts}, proxies=proxy_dict)
                 print("Response:", response.text)
             except Exception as e:
                 print(f"Error: {str(e)}")
