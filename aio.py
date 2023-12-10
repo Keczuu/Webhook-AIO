@@ -125,7 +125,8 @@ class webhookAIO:
                                     {Fore.BLUE}1.{Fore.RED} SPAM WEBHOOK
                                     {Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK
                                     {Fore.BLUE}3.{Fore.RED} WEBHOOK INFO
-                                    {Fore.BLUE}4.{Fore.RED} ENCODE/DECODE TO BASE64
+                                    {Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME
+                                    {Fore.BLUE}5.{Fore.RED} ENCODE/DECODE TO BASE64
               ''')
         selection = input(Fore.WHITE + "                                    Please select an option: ")
         if selection == "1":
@@ -135,6 +136,8 @@ class webhookAIO:
         elif selection == "3":
             self.info(self.settings.get("webhook_info_log"))
         elif selection == "4":
+            self.change_name()
+        elif selection == "5":
             self.decode()
         else:
             print("Invalid option!")
@@ -280,6 +283,17 @@ class webhookAIO:
         except Exception as e:
             print("                                    Error getting webhook info: {e}")
             redirect_to_main_menu()
+
+    def change_name(self):
+        clear_console()
+        webhook = input("                                    Enter webhook URL:\n")
+        name = input(f"                                    Webhook Name:\n")
+        try:
+            requests.patch(webhook, json={"name":name})
+            print("                                    Username changed successfully!")
+            redirect_to_main_menu()
+        except Exception as e:
+            print(f"Error: {e}")
 
     def decode(self):
         clear_console()
