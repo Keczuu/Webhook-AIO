@@ -1,5 +1,5 @@
 # Webhook-AIO
-I only use this to destroy ratters webhooks, but if you need this or take inspo, go ahead. ❗ It won't be updated. ❗
+I only use this to destroy ratters webhooks, but if you need this or take inspo, go ahead.
 ## Preview
 ![preview](x1Cl6jN.png)
 ## Setup
