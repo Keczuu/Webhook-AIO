@@ -97,7 +97,7 @@ def center_text(text, width=100):
     centered = text.center(width)
     return centered
 
-def center_text1(text, width=110):
+def center_text1(text, width=97):
     centered = text.center(width)
     return centered
 
@@ -123,12 +123,12 @@ class webhookAIO:
             save_settings(self.settings, settings_file_path)
         def display_menu():
             options = [
-                center_text1(f"{Fore.BLUE}1.{Fore.RED} SPAM WEBHOOK"),
-                center_text1(f"{Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK"),
-                center_text1(f"{Fore.BLUE}3.{Fore.RED} WEBHOOK INFO"),
-                center_text1(f"{Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME"),
-                center_text1(f"{Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES"),
-                center_text1(f"{Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64")
+                (f"                                    {Fore.BLUE}1.{Fore.RED} SPAM WEBHOOK"),
+                (f"                                    {Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK"),
+                (f"                                    {Fore.BLUE}3.{Fore.RED} WEBHOOK INFO"),
+                (f"                                    {Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME"),
+                (f"                                    {Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES"),
+                (f"                                    {Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64")
             ]
 
             menu_display = f'''{Fore.RED}
@@ -149,7 +149,7 @@ class webhookAIO:
         '''
             print(menu_display)
         display_menu()
-        selection = input(Fore.WHITE + center_text("Please select an option:") + "\n")
+        selection = input(Fore.WHITE + center_text1("Please select an option:") + "\n")
         if selection == "1":
             self.spam()
         elif selection == "2":
