@@ -127,7 +127,8 @@ class webhookAIO:
                 center_text1(f"{Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK"),
                 center_text1(f"{Fore.BLUE}3.{Fore.RED} WEBHOOK INFO"),
                 center_text1(f"{Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME"),
-                center_text1(f"{Fore.BLUE}5.{Fore.RED} ENCODE/DECODE TO BASE64")
+                center_text1(f"{Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES"),
+                center_text1(f"{Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64")
             ]
 
             menu_display = f'''{Fore.RED}
@@ -144,6 +145,7 @@ class webhookAIO:
 {options[2]}
 {options[3]}
 {options[4]}
+{options[5]}
         '''
             print(menu_display)
         display_menu()
@@ -157,6 +159,8 @@ class webhookAIO:
         elif selection == "4":
             self.change_name()
         elif selection == "5":
+            self.send_message()
+        elif selection == "6":
             self.decode()
         else:
             print("Invalid option!")
@@ -208,8 +212,11 @@ class webhookAIO:
                 random_proxy = random.choice(proxies_list)
                 proxy_dict = {"http": f"http://{random_proxy}", "https": f"http://{random_proxy}"}
                 username = random.choice(usernames)
-                response = requests.post(webhook_spam, json={"content": message, "username": username, "avatar_url": avatar, "tts": tts})
-                print("Response:", response.text)
+                response = requests.post(webhook_spam, json={"content": message, "username": username, "avatar_url": avatar, "tts": tts}, proxies=proxy_dict)
+                if response.text == "":
+                    print(f"{Fore.GREEN}[✔️] {Fore.YELLOW}Message sent successfully!")
+                else:
+                    print(f"{Fore.RED}[!] {Fore.YELLOW}You are being rate limited!")
             except Exception as e:
                 print(f"Error: {str(e)}")
                 redirect_to_main_menu()
@@ -314,6 +321,20 @@ class webhookAIO:
             redirect_to_main_menu()
         except Exception as e:
             print(f"Error: {e}")
+
+    def send_message(self):
+        clear_console()
+        webhook = input(center_text("Enter webhook URL:") + "\n")
+        message = input(center_text("Enter your message:") + "\n")
+        number_of_messages = int(input(center_text("How many times do you want to send it:") + "\n"))
+        for i in range(number_of_messages):
+            try:
+                requests.post(webhook, json={'content': message})
+            except Exception as e:
+                print(f"{e}")
+        print(f"Message sent {i+1} times!")
+        time.sleep(3)
+        redirect_to_main_menu()
 
     def decode(self):
         clear_console()
