@@ -128,7 +128,8 @@ class webhookAIO:
                 (f"                                    {Fore.BLUE}3.{Fore.RED} WEBHOOK INFO"),
                 (f"                                    {Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME"),
                 (f"                                    {Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES"),
-                (f"                                    {Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64")
+                (f"                                    {Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64"),
+                (f"                                    {Fore.BLUE}0.{Fore.RED} CHANGE WEBHOOK")
             ]
 
             menu_display = f'''{Fore.RED}
@@ -146,12 +147,14 @@ class webhookAIO:
 {options[3]}
 {options[4]}
 {options[5]}
+{options[6]}
         '''
             print(menu_display)
         display_menu()
+        self.logged_in_as()
         selection = input(Fore.WHITE + center_text1("Please select an option:") + "\n")
         if selection == "1":
-            self.spam()
+            self.spam(self.settings.get("webhook_del_log"))
         elif selection == "2":
             self.delete(self.settings.get("webhook_del_log"))
         elif selection == "3":
@@ -162,34 +165,16 @@ class webhookAIO:
             self.send_message()
         elif selection == "6":
             self.decode()
+        elif selection == "0":
+            self.change_webhook()
         else:
             print("Invalid option!")
             self.__init__()
 
 
-    def spam(self):
+    def spam(self, webhook_del_log):
         clear_console()
-        def decode_base64(encoded_string):
-            try:
-                decoded_bytes = base64.b64decode(encoded_string)
-                decoded_string = decoded_bytes.decode('utf-8')
-                return decoded_string
-            except Exception as e:
-                return f"Error decoding Base64: {str(e)}"
-
-        print(center_text("Choose an option:"))
-        print(center_text("1 - Normal URL webhook"))
-        print(center_text("2 - Base64 encoded webhook URL"))
-        choice = input(center_text("Please select an option: ") + "\n")
-
-        if choice == "1":
-            webhook_spam = input(center_text("Enter the URL of the normal webhook: ") + "\n")
-        elif choice == "2":
-            base64_encoded_string = input(center_text("Enter the Base64 encoded webhook URL:") + "\n")
-            webhook_spam = decode_base64(base64_encoded_string)
-        else:
-            print(center_text("Invalid choice. Exiting."))
-            redirect_to_main_menu()
+        webhook_spam = self.settings.get("user_webhook")
         print(center_text("Choose an option:"))
         print(center_text("1 - Given early message"))
         print(center_text("2 - Type your own message"))
@@ -216,28 +201,21 @@ class webhookAIO:
                 if response.text == "":
                     print(f"{Fore.GREEN}[✔️] {Fore.YELLOW}Message sent successfully!")
                 else:
-                    print(f"{Fore.RED}[!] {Fore.YELLOW}You are being rate limited!")
+                    if response.text == '{"message": "Unknown Webhook", "code": 10015}':
+                        del_message = "@everyone bro deleted his webhook!!!"
+                        del_message1 = "Turning off spammer..."
+                        requests.post(webhook_del_log, json={"content": del_message})
+                        requests.post(webhook_del_log, json={"content": del_message1})
+                        redirect_to_main_menu()
+                    else:
+                        print(f"{Fore.RED}[!] {Fore.YELLOW}You are being rate limited!")
             except Exception as e:
                 print(f"Error: {str(e)}")
                 redirect_to_main_menu()
 
     def delete(self, webhook_del_log):
         clear_console()
-        choice = input(center_text("Choose an option:\n1 - Normal URL webhook\n2 - Base64-encoded webhook\nEnter 1 or 2: ") + "\n")
-
-        if choice == '1':
-            webhook_url = input(center_text("Enter the URL of webhook: ") + "\n")
-        elif choice == '2':
-            base64_webhook = input(center_text("Enter the base64-encoded webhook: ") + "\n")
-            try:
-                webhook_url = base64.b64decode(base64_webhook).decode('utf-8')
-            except Exception as e:
-                print(center_text("Error decoding base64 input."))
-                redirect_to_main_menu()
-        else:
-            print(center_text("Invalid choice. Please choose 1 or 2."))
-            redirect_to_main_menu()
-
+        webhook_url = self.settings.get("user_webhook")
         response = requests.get(webhook_url)
         if response.status_code != 200:
             print(center_text("Failed to retrieve webhook data. Check the URL or your internet connection."))
@@ -270,7 +248,7 @@ class webhookAIO:
 
     def info(self, webhook_info_log):
         clear_console()
-        webhook = input(center_text("Enter webhook URL: ") + "\n")
+        webhook = self.settings.get("user_webhook")
         try:
             response = requests.get(f"{webhook}")
             if response.status_code == 200:
@@ -313,7 +291,7 @@ class webhookAIO:
 
     def change_name(self):
         clear_console()
-        webhook = input(center_text("Enter webhook URL:") + "\n")
+        webhook = self.settings.get("user_webhook")
         name = input(center_text("Webhook Name:") + "\n")
         try:
             requests.patch(webhook, json={"name":name})
@@ -324,7 +302,7 @@ class webhookAIO:
 
     def send_message(self):
         clear_console()
-        webhook = input(center_text("Enter webhook URL:") + "\n")
+        webhook = self.settings.get("user_webhook")
         message = input(center_text("Enter your message:") + "\n")
         number_of_messages = int(input(center_text("How many times do you want to send it:") + "\n"))
         for i in range(number_of_messages):
@@ -377,11 +355,31 @@ class webhookAIO:
                 print(center_text("Invalid choice. Going back to the menu."))
                 redirect_to_main_menu()
 
+    def change_webhook(self):
+        clear_console()
+        new_webhook = input("Enter the new webhook URL: ")
+        self.settings["user_webhook"] = new_webhook
+        save_settings(self.settings, settings_file_path)
+        print("Webhook updated successfully!")
+        redirect_to_main_menu()
+    
+    def logged_in_as(self):
+        webhook = self.settings.get("user_webhook")
+        try:
+            response = requests.get(f"{webhook}")
+            if response.status_code == 200:
+                data = response.json()
+                Username = str(data['user']['username'])
+                print(f"Logged in as {Username}")
+            else:
+                self.change_webhook()
+        except Exception as e:
+            print(f"Last webhook has been deleted! Change it.")
+
 if __name__ == "__main__":
     settings = load_settings(settings_file_path)
     if check_setting(settings, "Loading_screen", "True"):
         load_and_display()
     else:
         menu = webhookAIO()
-        menu.start()
 webhookAIO()
