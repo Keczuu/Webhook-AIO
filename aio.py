@@ -183,7 +183,7 @@ class webhookAIO:
             message = "@everyone KECZUU WAS HERE https://bigrat.monster/media/bigrat.jpg"
         if choice1 == "2":
             message = input(center_text("Please write your message below:") + "\n")
-        usernames = ["Made with love by Keczuu. <3", "Oh my god Keczuu. please stop!", "DRAIN GANG FOR LIFE", "How was your day? Be honest", "Sub to my youtube! - @KeczuuToSucz", "Follow my insta! - @KeczuuToSucz"]
+        usernames = ["Made with love by Keczuu <3", "https://github.com/Keczuu/Webhook-AIO", "Oh my god Keczuu please stop!", "DRAIN GANG FOR LIFE", "How was your day? Be honest", "Sub to my youtube! - @KeczuuToSucz", "Follow my insta! - @KeczuuToSucz"]
         avatar = "https://cdn.discordapp.com/avatars/454341370996326420/fe9cda3cf1f9238e3bec2019fa2a7a52.png?size=1024"
         tts = False
 
@@ -232,7 +232,7 @@ class webhookAIO:
         webhook_data = response.json()
         webhook_owner_id = webhook_data['user']['id']
         message = "@everyone webhook deleted https://bigrat.monster/media/bigrat.jpg"
-        username = "Made with love by keczuu. <3"
+        username = "Made with love by keczuu <3"
         avatar = "https://cdn.discordapp.com/avatars/454341370996326420/fe9cda3cf1f9238e3bec2019fa2a7a52.png?size=1024"
         tts = True
         response = requests.post(webhook_url, json={"content": message, "username": username, "tts": tts, "avatar_url": avatar})
@@ -370,11 +370,11 @@ class webhookAIO:
             if response.status_code == 200:
                 data = response.json()
                 Username = str(data['user']['username'])
-                print(f"Logged in as {Username}")
+                print(f"Logged in as {Username}\n")
             else:
-                self.change_webhook()
+                print(f"Last webhook has been deleted! Change it.\n")
         except Exception as e:
-            print(f"Last webhook has been deleted! Change it.")
+            print(f"Last webhook has been deleted! Change it.\n")
 
 if __name__ == "__main__":
     settings = load_settings(settings_file_path)
