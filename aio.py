@@ -370,7 +370,7 @@ class webhookAIO:
             if response.status_code == 200:
                 data = response.json()
                 Username = str(data['user']['username'])
-                print(f"Logged in as {Username}\n")
+                print(f"{Fore.GREEN}Logged in as {Username}\n")
             else:
                 print(f"Last webhook has been deleted! Change it.\n")
         except Exception as e:
