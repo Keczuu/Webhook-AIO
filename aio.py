@@ -9,17 +9,17 @@ from colorama import Fore, Style
 import json
 import random
 import subprocess
+import webbrowser
 
 colorama.init(autoreset=False)
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 def redirect_to_main_menu():
-    time.sleep(1)
     print(center_text("Exiting..."))
-    time.sleep(1)
+    time.sleep(0.5)
     print(center_text("Going back to main menu..."))
-    time.sleep(1)
+    time.sleep(0.5)
     clear_console()
     webhookAIO()
 
@@ -40,7 +40,7 @@ def save_settings(settings, file_path):
         with open(file_path, 'w') as file:
             json.dump(settings_str, file, indent=4)
         print("Settings saved successfully!")
-        time.sleep(2)
+        time.sleep(1)
         clear_console()
     except Exception as e:
         print(f"Error saving settings: {e}")
@@ -129,17 +129,18 @@ class webhookAIO:
                 (f"                                    {Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME"),
                 (f"                                    {Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES"),
                 (f"                                    {Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64"),
-                (f"                                    {Fore.BLUE}0.{Fore.RED} CHANGE WEBHOOK")
+                (f"                                    {Fore.BLUE}0.{Fore.RED} CHANGE WEBHOOK"),
+                (f"                                    {Fore.BLUE}X.{Fore.RED} CHECK FOR UPDATES")
             ]
 
             menu_display = f'''{Fore.RED}
- ▄▀▀▄    ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀█▄▄   ▄▀▀▄ ▄▄   ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ █      ▄▀▀█▄   ▄▀▀█▀▄   ▄▀▀▀▀▄  
-█   █    ▐  █ ▐  ▄▀   ▐ ▐ ▄▀   █ █  █   ▄▀ █      █ █      █ █  █ ▄▀     ▐ ▄▀ ▀▄ █   █  █ █      █ 
-▐  █        █   █▄▄▄▄▄    █▄▄▄▀  ▐  █▄▄▄█  █      █ █      █ ▐  █▀▄        █▄▄▄█ ▐   █  ▐ █      █ 
-  █   ▄    █    █    ▌    █   █     █   █  ▀▄    ▄▀ ▀▄    ▄▀   █   █      ▄▀   █     █    ▀▄    ▄▀ 
-   ▀▄▀ ▀▄ ▄▀   ▄▀▄▄▄▄    ▄▀▄▄▄▀    ▄▀  ▄▀    ▀▀▀▀     ▀▀▀▀   ▄▀   █      █   ▄▀   ▄▀▀▀▀▀▄   ▀▀▀▀   
-         ▀     █    ▐   █    ▐    █   █                      █    ▐      ▐   ▐   █       █         
-               ▐        ▐         ▐   ▐                      ▐                   ▐       ▐         
+ ▄▀▀▄    ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀█▄▄   ▄▀▀▄ ▄▄   ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ █      ▄▀▀█▄   ▄▀▀█▀▄   ▄▀▀▀▀▄
+█   █    ▐  █ ▐  ▄▀   ▐ ▐ ▄▀   █ █  █   ▄▀ █      █ █      █ █  █ ▄▀     ▐ ▄▀ ▀▄ █   █  █ █      █
+▐  █        █   █▄▄▄▄▄    █▄▄▄▀  ▐  █▄▄▄█  █      █ █      █ ▐  █▀▄        █▄▄▄█ ▐   █  ▐ █      █
+  █   ▄    █    █    ▌    █   █     █   █  ▀▄    ▄▀ ▀▄    ▄▀   █   █      ▄▀   █     █    ▀▄    ▄▀
+   ▀▄▀ ▀▄ ▄▀   ▄▀▄▄▄▄    ▄▀▄▄▄▀    ▄▀  ▄▀    ▀▀▀▀     ▀▀▀▀   ▄▀   █      █   ▄▀   ▄▀▀▀▀▀▄   ▀▀▀▀
+         ▀     █    ▐   █    ▐    █   █                      █    ▐      ▐   ▐   █       █
+               ▐        ▐         ▐   ▐                      ▐                   ▐       ▐
 
 {options[0]}
 {options[1]}
@@ -148,6 +149,7 @@ class webhookAIO:
 {options[4]}
 {options[5]}
 {options[6]}
+{options[7]}
         '''
             print(menu_display)
         display_menu()
@@ -167,6 +169,8 @@ class webhookAIO:
             self.decode()
         elif selection == "0":
             self.change_webhook()
+        elif selection == "x":
+            self.check_version()
         else:
             print("Invalid option!")
             self.__init__()
@@ -175,23 +179,28 @@ class webhookAIO:
     def spam(self, webhook_del_log):
         clear_console()
         webhook_spam = self.settings.get("user_webhook")
+        response = requests.get(webhook_spam)
+        if response.status_code != 200:
+            print(center_text("Webhook does not exists anymore!"))
+            redirect_to_main_menu()
+
         print(center_text("Choose an option:"))
         print(center_text("1 - Given early message"))
         print(center_text("2 - Type your own message"))
         choice1 = input(center_text("Enter your choice: ") + "\n")
         if choice1 == "1":
-            message = "@everyone KECZUU WAS HERE https://bigrat.monster/media/bigrat.jpg"
+            message = "@everyone you got spammed by [Webhook AIO](https://github.com/Keczuu/Webhook-AIO)\n\nget rekt\nhttps://bigrat.monster/media/bigrat.jpg"
         if choice1 == "2":
             message = input(center_text("Please write your message below:") + "\n")
         usernames = ["Made with love by Keczuu <3", "https://github.com/Keczuu/Webhook-AIO", "Oh my god Keczuu please stop!", "DRAIN GANG FOR LIFE", "How was your day? Be honest", "Sub to my youtube! - @KeczuuToSucz", "Follow my insta! - @KeczuuToSucz"]
-        avatar = "https://cdn.discordapp.com/avatars/454341370996326420/fe9cda3cf1f9238e3bec2019fa2a7a52.png?size=1024"
+        avatar = "https://cdn.discordapp.com/attachments/1042173487902629890/1201153593693192333/p7ilprA.png"
         tts = False
 
         with open("data/proxies.txt", "r") as proxy_select:
             proxies_list = proxy_select.readlines()
         proxies_list = [proxy.strip() for proxy in proxies_list if proxy.strip()]
         #code from spotify account generator by rado - thanks cutie <3
-        
+
         while True:
             try:
                 random_proxy = random.choice(proxies_list)
@@ -218,7 +227,7 @@ class webhookAIO:
         webhook_url = self.settings.get("user_webhook")
         response = requests.get(webhook_url)
         if response.status_code != 200:
-            print(center_text("Failed to retrieve webhook data. Check the URL or your internet connection."))
+            print(center_text("Webhook does not exists anymore!"))
             redirect_to_main_menu()
 
         def Add_to_file():
@@ -233,7 +242,7 @@ class webhookAIO:
         webhook_owner_id = webhook_data['user']['id']
         message = "@everyone webhook deleted https://bigrat.monster/media/bigrat.jpg"
         username = "Made with love by keczuu <3"
-        avatar = "https://cdn.discordapp.com/avatars/454341370996326420/fe9cda3cf1f9238e3bec2019fa2a7a52.png?size=1024"
+        avatar = "https://cdn.discordapp.com/attachments/1042173487902629890/1201153593693192333/p7ilprA.png"
         tts = True
         response = requests.post(webhook_url, json={"content": message, "username": username, "tts": tts, "avatar_url": avatar})
         print("Response:", response.text)
@@ -292,6 +301,10 @@ class webhookAIO:
     def change_name(self):
         clear_console()
         webhook = self.settings.get("user_webhook")
+        response = requests.get(webhook)
+        if response.status_code != 200:
+            print(center_text("Webhook does not exists anymore!"))
+            redirect_to_main_menu()
         name = input(center_text("Webhook Name:") + "\n")
         try:
             requests.patch(webhook, json={"name":name})
@@ -303,6 +316,10 @@ class webhookAIO:
     def send_message(self):
         clear_console()
         webhook = self.settings.get("user_webhook")
+        response = requests.get(webhook)
+        if response.status_code != 200:
+            print(center_text("Webhook does not exists anymore!"))
+            redirect_to_main_menu()
         message = input(center_text("Enter your message:") + "\n")
         number_of_messages = int(input(center_text("How many times do you want to send it:") + "\n"))
         for i in range(number_of_messages):
@@ -345,7 +362,7 @@ class webhookAIO:
             elif choice == '2':
                 encoded_string = input(center_text("Enter the Base64-encoded string to decode: ") + "\n")
                 decoded_result = decode_from_base64(encoded_string)
-                print(center_text("Decoded from Base64:" + decoded_result))
+                print(center_text("Decoded from Base64: " + decoded_result))
                 print("")
                 pyperclip.copy(decoded_result)
                 print(center_text("Copied to clipboard!"))
@@ -360,9 +377,8 @@ class webhookAIO:
         new_webhook = input("Enter the new webhook URL: ")
         self.settings["user_webhook"] = new_webhook
         save_settings(self.settings, settings_file_path)
-        print("Webhook updated successfully!")
         redirect_to_main_menu()
-    
+
     def logged_in_as(self):
         webhook = self.settings.get("user_webhook")
         try:
@@ -376,10 +392,35 @@ class webhookAIO:
         except Exception as e:
             print(f"Last webhook has been deleted! Change it.\n")
 
+    def check_version(self):
+        url = "https://raw.githubusercontent.com/Keczuu/Webhook-AIO/main/data/version.txt"
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            fetched_version = response.text.strip()
+            with open('data/version.txt') as f:
+                lines = f.readlines()
+            desired_version = lines[0].strip()
+            if fetched_version == desired_version:
+                clear_console()
+                print("Your AIO is up to date!")
+                redirect_to_main_menu()
+            else:
+                clear_console()
+                selection = input("New update available!\n[1] Open in browser\n[2] Skip\n")
+                if selection == "1":
+                    webbrowser.open_new_tab("https://github.com/Keczuu/Webhook-AIO") #it opens twice. why? idk idc really. if it works its all good.
+                elif selection == "2":
+                    pass
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching content: {e}")
+
 if __name__ == "__main__":
     settings = load_settings(settings_file_path)
     if check_setting(settings, "Loading_screen", "True"):
         load_and_display()
     else:
         menu = webhookAIO()
+
 webhookAIO()
