@@ -123,33 +123,23 @@ class webhookAIO:
             save_settings(self.settings, settings_file_path)
         def display_menu():
             options = [
-                (f"                                    {Fore.BLUE}1.{Fore.RED} SPAM WEBHOOK"),
-                (f"                                    {Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK"),
-                (f"                                    {Fore.BLUE}3.{Fore.RED} WEBHOOK INFO"),
-                (f"                                    {Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME"),
-                (f"                                    {Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES"),
-                (f"                                    {Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64"),
-                (f"                                    {Fore.BLUE}0.{Fore.RED} CHANGE WEBHOOK"),
-                (f"                                    {Fore.BLUE}X.{Fore.RED} CHECK FOR UPDATES")
+                (f"          {Fore.BLUE}1.{Fore.RED} SPAM WEBHOOK                 {Fore.BLUE}2.{Fore.RED} DELETE WEBHOOK                 {Fore.BLUE}3.{Fore.RED} WEBHOOK INFO"),
+                (f"          {Fore.BLUE}4.{Fore.RED} CHANGE WEBHOOK NAME          {Fore.BLUE}5.{Fore.RED} SEND MESSAGES X TIMES          {Fore.BLUE}6.{Fore.RED} ENCODE/DECODE TO BASE64"),
+                (f"          {Fore.BLUE}0.{Fore.RED} CHANGE WEBHOOK                                                 {Fore.BLUE}X.{Fore.RED} CHECK FOR UPDATES"),
             ]
 
             menu_display = f'''{Fore.RED}
- ▄▀▀▄    ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀█▄▄   ▄▀▀▄ ▄▄   ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ █      ▄▀▀█▄   ▄▀▀█▀▄   ▄▀▀▀▀▄
-█   █    ▐  █ ▐  ▄▀   ▐ ▐ ▄▀   █ █  █   ▄▀ █      █ █      █ █  █ ▄▀     ▐ ▄▀ ▀▄ █   █  █ █      █
-▐  █        █   █▄▄▄▄▄    █▄▄▄▀  ▐  █▄▄▄█  █      █ █      █ ▐  █▀▄        █▄▄▄█ ▐   █  ▐ █      █
-  █   ▄    █    █    ▌    █   █     █   █  ▀▄    ▄▀ ▀▄    ▄▀   █   █      ▄▀   █     █    ▀▄    ▄▀
-   ▀▄▀ ▀▄ ▄▀   ▄▀▄▄▄▄    ▄▀▄▄▄▀    ▄▀  ▄▀    ▀▀▀▀     ▀▀▀▀   ▄▀   █      █   ▄▀   ▄▀▀▀▀▀▄   ▀▀▀▀
-         ▀     █    ▐   █    ▐    █   █                      █    ▐      ▐   ▐   █       █
-               ▐        ▐         ▐   ▐                      ▐                   ▐       ▐
+  ▄▀▀▄    ▄▀▀▄  ▄▀▀█▄▄▄▄  ▄▀▀█▄▄   ▄▀▀▄ ▄▄   ▄▀▀▀▀▄   ▄▀▀▀▀▄   ▄▀▀▄ █      ▄▀▀█▄   ▄▀▀█▀▄   ▄▀▀▀▀▄
+ █   █    ▐  █ ▐  ▄▀   ▐ ▐ ▄▀   █ █  █   ▄▀ █      █ █      █ █  █ ▄▀     ▐ ▄▀ ▀▄ █   █  █ █      █
+ ▐  █        █   █▄▄▄▄▄    █▄▄▄▀  ▐  █▄▄▄█  █      █ █      █ ▐  █▀▄        █▄▄▄█ ▐   █  ▐ █      █
+   █   ▄    █    █    ▌    █   █     █   █  ▀▄    ▄▀ ▀▄    ▄▀   █   █      ▄▀   █     █    ▀▄    ▄▀
+    ▀▄▀ ▀▄ ▄▀   ▄▀▄▄▄▄    ▄▀▄▄▄▀    ▄▀  ▄▀    ▀▀▀▀     ▀▀▀▀   ▄▀   █      █   ▄▀   ▄▀▀▀▀▀▄   ▀▀▀▀
+          ▀     █    ▐   █    ▐    █   █                      █    ▐      ▐   ▐   █       █
+                ▐        ▐         ▐   ▐                      ▐                   ▐       ▐
 
 {options[0]}
 {options[1]}
 {options[2]}
-{options[3]}
-{options[4]}
-{options[5]}
-{options[6]}
-{options[7]}
         '''
             print(menu_display)
         display_menu()
@@ -239,7 +229,7 @@ class webhookAIO:
                 file.close
 
         webhook_data = response.json()
-        webhook_owner_id = webhook_data['user']['id']
+        webhook_owner_id = webhook_data['url']
         message = "@everyone webhook deleted https://bigrat.monster/media/bigrat.jpg"
         username = "Made with love by keczuu <3"
         avatar = "https://cdn.discordapp.com/attachments/1042173487902629890/1201153593693192333/p7ilprA.png"
@@ -247,7 +237,7 @@ class webhookAIO:
         response = requests.post(webhook_url, json={"content": message, "username": username, "tts": tts, "avatar_url": avatar})
         print("Response:", response.text)
         requests.delete(webhook_url)
-        message2 = f'<@{webhook_owner_id}> webhook has been deleted!'
+        message2 = f'{webhook_owner_id} webhook has been deleted!'
         log = f"{webhook_owner_id} got his webhook deleted!\n{webhook_url}"
         requests.post(webhook_del_log, json={'content': message2})
         print(center_text("Webhook log has been sent!"))
@@ -268,8 +258,6 @@ class webhookAIO:
                 GuildID = str(data["guild_id"])
                 Token = str(data["token"])
                 Avatar = str(data["avatar"])
-                ID= str(data['user']['id'])
-                ID1= str(data['id'])
 
                 def Add_to_file1():
                     with open('LOGS/Check_Webhook_log.txt', 'w') as file:
@@ -279,12 +267,11 @@ class webhookAIO:
 
                 message1 = '```██╗    ██╗██╗   ██╗   ██╗███████╗██████╗ ██╗  ██╗ █████╗ \n██║    ██║╚██╗ ██╔╝   ██║██╔════╝██╔══██╗██║ ██╔╝██╔══██╗\n██║ █╗ ██║ ╚████╔╝    ██║█████╗  ██████╔╝█████╔╝ ███████║\n██║███╗██║  ╚██╔╝██   ██║██╔══╝  ██╔══██╗██╔═██╗ ██╔══██║\n╚███╔███╔╝   ██║ ╚█████╔╝███████╗██████╔╝██║  ██╗██║  ██║\n╚══╝╚══╝    ╚═╝  ╚════╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝```'
                 message2 = '```\n       ████████╗██╗   ██╗██████╗ ██╗   ██╗              \n       ╚══██╔══╝╚██╗ ██╔╝██╔══██╗██║   ██║              \n          ██║    ╚████╔╝ ██████╔╝██║   ██║              \n          ██║     ╚██╔╝  ██╔═══╝ ██║   ██║              \n          ██║      ██║   ██║     ╚██████╔╝              \n          ╚═╝      ╚═╝   ╚═╝      ╚═════╝               ```'
-                message = f' ____    |\/|\n \  /\   / ..__.\n  \/  \__\   _/\n   \__   __  \_     \n      \____\___\'\n<@{ID}> WEBHOOK GOT LEAKED!!!\n\nWebhook name: {Name}\nChannel ID: {ChannelID}\nGuild ID: {GuildID}\nToken: {Token}\nAvatar: {Avatar}\n-=-=- Made with love by Keczuu <3 -=-=-'
-                message3 = f'```██╗    ██╗███████╗██████╗ ██╗  ██╗ ██████╗  ██████╗ ██╗  ██╗\n██║    ██║██╔════╝██╔══██╗██║  ██║██╔═══██╗██╔═══██╗██║ ██╔╝\n██║ █╗ ██║█████╗  ██████╔╝███████║██║   ██║██║   ██║█████╔╝ \n██║███╗██║██╔══╝  ██╔══██╗██╔══██║██║   ██║██║   ██║██╔═██╗ \n╚███╔███╔╝███████╗██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║  ██╗\n ╚══╝╚══╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝```\n<@{ID}> WEBHOOK GOT LEAKED!!!\n\n`Webhook name: {Name}\nChannel ID: {ChannelID}\nGuild ID: {GuildID}\nToken: `||{Token}||`\nAvatar: {Avatar}\nURL: {webhook}`\n`-=-=- Made with love by Keczuu <3 -=-=-`'
+                message = f' ____    |\/|\n \  /\   / ..__.\n  \/  \__\   _/\n   \__   __  \_     \n      \____\___\'\nHere should be this guy ping. Discord changed webhook system and right now you **cant** see whom created webhook. Great update :3\n\nWebhook name: {Name}\nChannel ID: {ChannelID}\nGuild ID: {GuildID}\nToken: {Token}\nAvatar: {Avatar}\nUrl: {webhook}\n-=-=- Made with love by Keczuu <3 -=-=-'
+                message3 = f'```██╗    ██╗███████╗██████╗ ██╗  ██╗ ██████╗  ██████╗ ██╗  ██╗\n██║    ██║██╔════╝██╔══██╗██║  ██║██╔═══██╗██╔═══██╗██║ ██╔╝\n██║ █╗ ██║█████╗  ██████╔╝███████║██║   ██║██║   ██║█████╔╝ \n██║███╗██║██╔══╝  ██╔══██╗██╔══██║██║   ██║██║   ██║██╔═██╗ \n╚███╔███╔╝███████╗██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║  ██╗\n ╚══╝╚══╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝```\nHere should be this guy ping. Discord changed webhook system and right now you **cant** see whom created webhook. Great update :3\n\n`Webhook name: {Name}\nChannel ID: {ChannelID}\nGuild ID: {GuildID}\nToken: `||{Token}||`\nAvatar: {Avatar}\nURL: {webhook}`\n`-=-=- Made with love by Keczuu <3 -=-=-`'
                 requests.post(webhook_info_log, json={'content': message1})
                 requests.post(webhook_info_log, json={'content': message2})
                 requests.post(webhook_info_log, json={'content': message3})
-
                 print(center_text("Webhook data sent successfully!"))
                 Add_to_file1()
                 print(center_text("Saved to Check_Webhook_log.txt!"))
@@ -384,13 +371,12 @@ class webhookAIO:
         try:
             response = requests.get(f"{webhook}")
             if response.status_code == 200:
-                data = response.json()
-                Username = str(data['user']['username'])
-                print(f"{Fore.GREEN}Logged in as {Username}\n")
+                print(center_text(f"{Fore.GREEN}Logged in to webhook! (discord changed webhook systems! check readme!)\n"))
             else:
-                print(f"Last webhook has been deleted! Change it.\n")
+                print(center_text1(f"Last webhook has been deleted! Change it.\n"))
         except Exception as e:
-            print(f"Last webhook has been deleted! Change it.\n")
+            print(center_text1(f"Last webhook has been deleted! Change it.\n"))
+
 
     def check_version(self):
         url = "https://raw.githubusercontent.com/Keczuu/Webhook-AIO/main/data/version.txt"
